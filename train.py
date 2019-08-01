@@ -115,9 +115,9 @@ def main():
 
         all_vars = [v for v in tf.trainable_variables() if 'model' in v.name]
         train_vars = [v for v in all_vars if '/h' in v.name] if args.only_train_transformer_layers else all_vars
-
+        import random
         if args.optimizer == 'adam':
-            opt = tf.train.AdamOptimizer(learning_rate=args.learning_rate)
+            opt = tf.train.AdadeltaOptimizer(learning_rate=random.uniform(1.0, 1.5))
         elif args.optimizer == 'sgd':
             opt = tf.train.GradientDescentOptimizer(learning_rate=args.learning_rate)
         else:
