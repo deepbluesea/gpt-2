@@ -50,6 +50,7 @@ parser.add_argument('--val_dataset', metavar='PATH', type=str, default=None, hel
 parser.add_argument('--val_batch_size', metavar='SIZE', type=int, default=2, help='Batch size for validation.')
 parser.add_argument('--val_batch_count', metavar='N', type=int, default=40, help='Number of batches for validation.')
 parser.add_argument('--val_every', metavar='STEPS', type=int, default=0, help='Calculate validation loss every STEPS steps.')
+parser.add_argument('--train_vars_limit', type=int, default=1, help='Calculate validation loss every STEPS steps.')
 
 
 def maketree(path):
@@ -115,7 +116,12 @@ def main():
 
         all_vars = [v for v in tf.trainable_variables() if 'model' in v.name]
         train_vars = [v for v in all_vars if '/h' in v.name] if args.only_train_transformer_layers else all_vars
-        train_vars = train_vars[-128:]
+        print(len(all_vars)
+        print(len(train_vars)
+        if args.train_vars_limit == '1':
+            print('limiter')
+            train_vars = train_vars[-128:]
+        print(len(train_vars)
         if args.optimizer == 'adam':
             opt = tf.train.AdadeltaOptimizer(learning_rate=1.0)
             opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
