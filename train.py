@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(
     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument('--dataset', metavar='PATH', type=str, required=True, help='Input file, directory, or glob pattern (utf-8 text, or preencoded .npz files).')
-parser.add_argument('--model_name', metavar='MODEL', type=str, default='117M', help='Pretrained model name')
+parser.add_argument('--model_name', metavar='MODEL', type=str, default='774M', help='Pretrained model name')
 parser.add_argument('--combine', metavar='CHARS', type=int, default=50000, help='Concatenate input files with <|endoftext|> separator into chunks of this minimum size')
 
 parser.add_argument('--batch_size', metavar='SIZE', type=int, default=1, help='Batch size')
@@ -79,7 +79,7 @@ def main():
         raise ValueError(
             "Can't get samples longer than window size: %s" % hparams.n_ctx)
 
-    if args.model_name == '345M':
+    if args.model_name == '774M':
         args.memory_saving_gradients = True
         if args.optimizer == 'adam':
             args.only_train_transformer_layers = True
@@ -115,6 +115,7 @@ def main():
 
         all_vars = [v for v in tf.trainable_variables() if 'model' in v.name]
         train_vars = [v for v in all_vars if '/h' in v.name] if args.only_train_transformer_layers else all_vars
+        train_vars = train_vars[-128:]
         if args.optimizer == 'adam':
             opt = tf.train.AdadeltaOptimizer(learning_rate=1.0)
         elif args.optimizer == 'sgd':
