@@ -118,6 +118,7 @@ def main():
         train_vars = train_vars[-128:]
         if args.optimizer == 'adam':
             opt = tf.train.AdadeltaOptimizer(learning_rate=1.0)
+            opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
         elif args.optimizer == 'sgd':
             opt = tf.train.GradientDescentOptimizer(learning_rate=args.learning_rate)
         else:
