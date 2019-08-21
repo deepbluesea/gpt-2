@@ -116,12 +116,12 @@ def main():
 
         all_vars = [v for v in tf.trainable_variables() if 'model' in v.name]
         train_vars = [v for v in all_vars if '/h' in v.name] if args.only_train_transformer_layers else all_vars
-        print(len(all_vars)
-        print(len(train_vars)
+        print(len(all_vars))
+        print(len(train_vars))
         if args.train_vars_limit == '1':
             print('limiter')
             train_vars = train_vars[-128:]
-        print(len(train_vars)
+        print(len(train_vars))
         if args.optimizer == 'adam':
             opt = tf.train.AdadeltaOptimizer(learning_rate=1.0)
             opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
