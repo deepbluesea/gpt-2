@@ -125,7 +125,7 @@ def main():
             print('adad')
             opt = tf.train.AdadeltaOptimizer(learning_rate=1.0)
             opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
-        if args.optimizer == 'adam':
+        elif args.optimizer == 'adam':
             print('adam')
             opt = tf.train.AdamOptimizer(learning_rate=args.learning_rate)
             opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
