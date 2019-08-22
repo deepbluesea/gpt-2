@@ -122,6 +122,7 @@ def main():
             print('limiter')
             train_vars = train_vars[-args.train_vars:]
             print(len(train_vars))
+            print(train_vars)
         if args.optimizer == 'adad':
             print('adad')
             opt = tf.train.AdadeltaOptimizer(learning_rate=1.0)
