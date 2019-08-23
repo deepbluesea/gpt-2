@@ -57,7 +57,8 @@ parser.add_argument('--storage_bucket', metavar='BUCKET', type=str, default='gs:
 parser.add_argument('--init_tpu', default=False, action='store_true', help='Initialize TPU session.')
 parser.add_argument('--fresh_model', default=False, action='store_true', help="Don't load model from disk; initialize model weights to random values")
 parser.add_argument('--save_on_ctrlc', default=False, action='store_true', help='When execution is interrupted, should we save the model to disk?')
-parser.add_argument('--train_vars_limit', default=False, action='store_true',help='limit training vars')
+parser.add_argument('--train_vars_limit', default=True, action='store_true',help='limit training vars')
+parser.add_argument('--train_vars',type=int,default=128,help='limit training vars')
 
 
 def maketree(path):
@@ -131,8 +132,9 @@ def main(tpu_cluster=None):
         print(len(train_vars))
         if args.train_vars_limit:
             print('limiter')
-            train_vars = train_vars[-128:]
+            train_vars = train_vars[-args.train_vars:]
             print(len(train_vars))
+            print(train_vars)
         if args.optimizer == 'adad':
             print('adad')
             opt = tf.train.AdadeltaOptimizer(learning_rate=1.0)
