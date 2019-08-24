@@ -54,12 +54,12 @@ parser.add_argument('--val_batch_count', metavar='N', type=int, default=40, help
 parser.add_argument('--val_every', metavar='STEPS', type=int, default=0, help='Calculate validation loss every STEPS steps.')
 
 parser.add_argument('--storage_bucket', metavar='BUCKET', type=str, default='gs://sgappa-multi/gpt-2/', help='Cloud storage bucket name (when using TPU)')
-parser.add_argument('--init_tpu', default=False, action='store_true', help='Initialize TPU session.')
+parser.add_argument('--init_tpu', default=True, action='store_true', help='Initialize TPU session.')
 parser.add_argument('--fresh_model', default=False, action='store_true', help="Don't load model from disk; initialize model weights to random values")
 parser.add_argument('--save_on_ctrlc', default=False, action='store_true', help='When execution is interrupted, should we save the model to disk?')
 parser.add_argument('--train_vars_limit', default=True, action='store_true',help='limit training vars')
 parser.add_argument('--train_vars',type=int,default=128,help='limit training vars')
-
+parser.add_argument('--train_lur', default=True, action='store_true',help='limit training vars')
 
 def maketree(path):
     try:
@@ -88,7 +88,7 @@ def main(tpu_cluster=None):
         raise ValueError(
             "Can't get samples longer than window size: %s" % hparams.n_ctx)
 
-    if args.model_name == '774M':
+    if args.model_name == '355M':
         args.memory_saving_gradients = True
         if args.optimizer == 'adam':
             args.only_train_transformer_layers = True
@@ -130,6 +130,8 @@ def main(tpu_cluster=None):
         all_vars = [v for v in tf.trainable_variables() if 'model' in v.name]
         train_vars = [v for v in all_vars if '/h' in v.name] if args.only_train_transformer_layers else all_vars
         print(len(train_vars))
+        if args.train_lur:
+            train_vars = [v for v in all_vars if '/l_' in v.name] if args.only_train_transformer_layers else all_vars
         if args.train_vars_limit:
             print('limiter')
             train_vars = train_vars[-args.train_vars:]
