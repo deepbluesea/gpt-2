@@ -129,7 +129,10 @@ def main(tpu_cluster=None):
 
         all_vars = [v for v in tf.trainable_variables() if 'model' in v.name]
         train_vars = [v for v in all_vars if '/h' in v.name] if args.only_train_transformer_layers else all_vars
-        train_vars = [v for v in all_vars if '/l_' in v.name] if args.train_lur else all_vars
+        train_vars = [v for v in all_vars if 'l_' in v.name] if args.train_lur else all_vars
+        print(train_vars)
+        print(len(train_vars))
+
         if args.train_vars_limit:
             print('limiter')
             train_vars = train_vars[-args.train_vars:]
