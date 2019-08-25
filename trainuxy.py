@@ -119,7 +119,6 @@ def main():
         all_vars = [v for v in tf.trainable_variables() if 'model' in v.name]
         train_vars = [v for v in all_vars if '/h' in v.name] if args.only_train_transformer_layers else all_vars
         train_vars = [v for v in all_vars if 'n_1' in v.name] if args.train_lur else train_vars
-        train_vars += [v for v in all_vars if 'n_2' in v.name] if args.train_lur else train_vars
         train_vars = train_vars[-args.train_vars:]
         print(train_vars)
         print(len(train_vars))
