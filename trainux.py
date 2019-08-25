@@ -50,7 +50,8 @@ parser.add_argument('--val_dataset', metavar='PATH', type=str, default=None, hel
 parser.add_argument('--val_batch_size', metavar='SIZE', type=int, default=2, help='Batch size for validation.')
 parser.add_argument('--val_batch_count', metavar='N', type=int, default=40, help='Number of batches for validation.')
 parser.add_argument('--val_every', metavar='STEPS', type=int, default=0, help='Calculate validation loss every STEPS steps.')
-parser.add_argument('--train_vars_limit', default=True, action='store_true',help='limit training vars')
+parser.add_argument('--train_vars_limit', default=False, action='store_true',help='limit training vars')
+parser.add_argument('--train_lur',action='store_true',help='limit training vars')
 parser.add_argument('--train_vars',type=int,default=128,help='limit training vars')
 
 
