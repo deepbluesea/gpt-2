@@ -128,7 +128,7 @@ def main():
             print(train_vars)
         if args.optimizer == 'adad':
             print('adad')
-            opt = tf.train.AdadeltaOptimizer(learning_rate=1.0)
+            opt = tf.train.AdadeltaOptimizer(learning_rate=args.learning_rate)
             opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
         elif args.optimizer == 'adam':
             print('adam')
