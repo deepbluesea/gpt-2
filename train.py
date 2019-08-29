@@ -53,7 +53,6 @@ parser.add_argument('--val_every', metavar='STEPS', type=int, default=0, help='C
 parser.add_argument('--train_vars_limit', default=False, action='store_true',help='limit training vars')
 parser.add_argument('--train_lur',action='store_true',help='limit training vars')
 parser.add_argument('--train_vars',type=int,default=128,help='limit training vars')
-parser.add_argument('--kaggle',action='store_true',help='limit training vars')
 
 
 def maketree(path):
@@ -172,7 +171,18 @@ def main():
             keep_checkpoint_every_n_hours=2)
         sess.run(tf.global_variables_initializer())
 
-        ckpt = tf.train.latest_checkpoint('/kaggle/input/774m/774M/')
+        if args.restore_from == 'latest':
+            ckpt = tf.train.latest_checkpoint(
+                os.path.join(CHECKPOINT_DIR, args.run_name))
+            if ckpt is None:
+                # Get fresh GPT weights if new run.
+                ckpt = tf.train.latest_checkpoint(
+                    os.path.join('models', args.model_name))
+        elif args.restore_from == 'fresh':
+            ckpt = tf.train.latest_checkpoint(
+                os.path.join('models', args.model_name))
+        else:
+            ckpt = tf.train.latest_checkpoint(args.restore_from)
         print('Loading checkpoint', ckpt)
         saver.restore(sess, ckpt)
 
