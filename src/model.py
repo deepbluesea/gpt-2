@@ -165,6 +165,7 @@ def model(hparams, X, past=None, scope='model', reuse=tf.AUTO_REUSE):
             presents.append(present)
         results['present'] = tf.stack(presents, axis=1)
         h = norm(h, 'ln_f')
+        tf.compat.v1.add_to_collection('checkpoints', h)
 
         # Language model loss.  Do tokens <n predict token n?
         h_flat = tf.reshape(h, [batch*sequence, hparams.n_embd])
