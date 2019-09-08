@@ -16,6 +16,9 @@ from load_dataset import load_dataset, Sampler
 from accumulate import AccumulatingOptimizer
 import memory_saving_gradients
 
+
+from sm3 import SM3Optimizer
+
 CHECKPOINT_DIR = 'checkpoint'
 SAMPLE_DIR = 'samples'
 
@@ -133,9 +136,8 @@ def main():
             print('adam')
             opt = tf.train.MomentumOptimizer(learning_rate=args.learning_rate,momentum=0.9,use_nesterov=True)
             opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
-        elif args.optimizer == 'sgd':
-            opt = tf.train.GradientDescentOptimizer(learning_rate=args.learning_rate)
-            opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
+        elif args.optimizer == 'sm3':
+            opt = SM3Optimizer(learning_rate=args.learning_rate,momentum=0.9)
         else:
             exit('Bad optimizer:', args.optimizer)
 
