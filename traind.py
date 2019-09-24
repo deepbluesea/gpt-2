@@ -430,6 +430,7 @@ class AdaFactorOptimizer(tf.train.Optimizer):
             # END HACK
 
             if self._use_factored(shape_list):
+                print(shape_list)
                 num_rows, num_columns = shape_list
 
                 vr = tf.get_variable(
