@@ -410,7 +410,7 @@ class AdaFactorOptimizer(tf.train.Optimizer):
                 continue
 
             param_name = self._get_variable_name(param.name)
-            shape_list = get_shape_list(param, expected_rank=[1, 2])
+            shape_list = get_shape_list(param, expected_rank=3)
 
             # decay_rate = 1 - tf.pow(tf.cast(tf.train.get_or_create_global_step(), tf.float32) + 1.0, -0.8)
             decay_rate = self.beta_2
