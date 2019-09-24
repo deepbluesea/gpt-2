@@ -430,9 +430,10 @@ class AdaFactorOptimizer(tf.train.Optimizer):
             # END HACK
 
             if self._use_factored(shape_list):
-                print(shape_list)
                 num_rows = shape_list[0]
-                num_columns = shape_list[1]
+                print(num_rows)
+                num_columns = shape_list[1][0]
+                print(num_columns)
                 vr = tf.get_variable(
                     name=param_name + "/adafactor_vr",
                     shape=[num_rows],
