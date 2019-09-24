@@ -15,7 +15,7 @@ import model, sample, encoder
 from load_dataset import load_dataset, Sampler
 from accumulate import AccumulatingOptimizer
 import memory_saving_gradients
-
+from ap import optimization_adafactor
 
 from sm3 import SM3Optimizer
 
