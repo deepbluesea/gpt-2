@@ -584,7 +584,7 @@ def main():
             opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
         elif args.optimizer == 'adam':
             print('adam')
-            opt, _ = optimization_adafactor.create_optimizer(loss, args.learning_rate, 800000, 10000)
+            opt, _ = create_optimizer(loss, args.learning_rate, 800000, 10000)
         elif args.optimizer == 'sm3':
             opt = SM3Optimizer(learning_rate=args.learning_rate,momentum=0.9)
         else:
