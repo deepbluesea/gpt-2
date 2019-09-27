@@ -150,7 +150,7 @@ def main():
         lms_obj = LMS({'Adafactor_optimizer'})
         lms_obj.run(graph=tf.get_default_graph())
     elif args.optimizer == 'c':
-        with tf.name_scope('sm3_optimizer')
+        with tf.name_scope('sm3_optimizer'):
             opt = SM3Optimizer(learning_rate=args.learning_rate,momentum=0.9)
             opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
         from tensorflow_large_model_support import LMS
