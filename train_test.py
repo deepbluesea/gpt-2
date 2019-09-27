@@ -134,6 +134,23 @@ def main():
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
+    
+    if args.optimizer == 'a':
+        tf.name_scope('Adadelta_optimizer'):
+            opt = tf.train.AdadeltaOptimizer(learning_rate=args.learning_rate)
+            opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
+        from tensorflow_large_model_support import LMS
+        lms_obj = LMS({'Adadelta_optimizer'})
+        lms_obj.run(graph=tf.get_default_graph())
+    elif args.optimizer == 'b':
+        opt = AdafactorOptimizer(learning_rate=args.learning_rate)
+        opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
+    elif args.optimizer == 'c':
+        opt = SM3Optimizer(learning_rate=args.learning_rate,momentum=0.9)
+    else:
+        exit('Bad optimizer:', args.optimizer)
+    
+
     config.graph_options.rewrite_options.layout_optimizer = rewriter_config_pb2.RewriterConfig.OFF
     with tf.Session(config=config) as sess:
         context = tf.placeholder(tf.int32, [args.batch_size, None])
@@ -170,18 +187,6 @@ def main():
             train_vars = train_vars[-args.train_vars:]
             print(len(train_vars))
             print(train_vars)
-        if args.optimizer == 'a':
-            print('adad')
-            opt = tf.train.AdadeltaOptimizer(learning_rate=args.learning_rate)
-            opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
-        elif args.optimizer == 'b':
-            print('adam')
-            opt = AdafactorOptimizer(learning_rate=args.learning_rate)
-            opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
-        elif args.optimizer == 'c':
-            opt = SM3Optimizer(learning_rate=args.learning_rate,momentum=0.9)
-        else:
-            exit('Bad optimizer:', args.optimizer)
 
         if args.accumulate_gradients > 1:
             if args.memory_saving_gradients:
