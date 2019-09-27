@@ -143,10 +143,19 @@ def main():
         lms_obj = LMS({'Adadelta_optimizer'})
         lms_obj.run(graph=tf.get_default_graph())
     elif args.optimizer == 'b':
-        opt = AdafactorOptimizer(learning_rate=args.learning_rate)
-        opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
+        with tf.name_scope('Adafactor_optimizer'):
+            opt = AdafactorOptimizer(learning_rate=args.learning_rate)
+            opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
+        from tensorflow_large_model_support import LMS
+        lms_obj = LMS({'Adafactor_optimizer'})
+        lms_obj.run(graph=tf.get_default_graph())
     elif args.optimizer == 'c':
-        opt = SM3Optimizer(learning_rate=args.learning_rate,momentum=0.9)
+        with tf.name_scope('sm3_optimizer')
+            opt = SM3Optimizer(learning_rate=args.learning_rate,momentum=0.9)
+            opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
+        from tensorflow_large_model_support import LMS
+        lms_obj = LMS({'sm3_optimizer'})
+        lms_obj.run(graph=tf.get_default_graph())
     else:
         exit('Bad optimizer:', args.optimizer)
     
