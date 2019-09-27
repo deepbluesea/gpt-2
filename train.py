@@ -136,7 +136,7 @@ def main():
     config.gpu_options.allow_growth = True
     
     if args.optimizer == 'a':
-        tf.name_scope('Adadelta_optimizer'):
+        with tf.name_scope('Adadelta_optimizer'):
             opt = tf.train.AdadeltaOptimizer(learning_rate=args.learning_rate)
             opt = tf.train.experimental.enable_mixed_precision_graph_rewrite(opt)
         from tensorflow_large_model_support import LMS
